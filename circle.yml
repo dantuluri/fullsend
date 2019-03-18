@@ -1,0 +1,152 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore_cache:
+          key: send-build-{{ checksum "package-lock.json" }}
+      - run: npm install
+      - save_cache:
+          key: send-build-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./dist
+  test:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: send-test-{{ checksum "package-lock.json" }}
+      - run: npm install
+      - save_cache:
+          key: send-test-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run: npm run lint
+      - run: npm run test
+      - store_artifacts:
+          path: coverage
+  integration_tests:
+    docker:
+      - image: circleci/node:10
+      - image: selenium/standalone-firefox
+    steps:
+      - checkout
+      - restore_cache:
+          key: send-int-{{ checksum "package-lock.json" }}
+      - run: npm install
+      - save_cache:
+          key: send-int-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run: npm run circleci-test-integration
+  deploy_dev:
+    machine: true
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker build -t mozilla/send:latest .
+      - run: docker push mozilla/send:latest
+  deploy_vnext:
+    machine: true
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker build -t mozilla/send:vnext .
+      - run: docker push mozilla/send:vnext
+  deploy_stage:
+    machine: true
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: docker build -t mozilla/send:$CIRCLE_TAG .
+      - run: docker push mozilla/send:$CIRCLE_TAG
+workflows:
+  version: 2
+  test_pr:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - master
+                - vnext
+      - test:
+          filters:
+            branches:
+              ignore:
+                - master
+                - vnext
+      - integration_tests:
+          filters:
+            branches:
+              ignore: master
+  build_and_deploy_dev:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - vnext
+            tags:
+              ignore: /^v.*/
+      - deploy_dev:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+            tags:
+              ignore: /^v.*/
+      - deploy_vnext:
+          requires:
+            - build
+          filters:
+            branches:
+              only: vnext
+            tags:
+              ignore: /^v.*/
+  build_and_deploy_stage:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - test:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - integration_tests:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - deploy_stage:
+          requires:
+            - build
+            - test
+            - integration_tests
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/

@@ -1,0 +1,6 @@
+dist
+assets
+firefox
+coverage
+app/locale.js
+app/capabilities.js
