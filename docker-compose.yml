@@ -7,7 +7,10 @@ services:
     ports:
       - "1443:1443"
     environment:
-      - REDIS_HOST=redis
+      - REDIS_HOST=35.230.117.94
+      - GCS_BUCKET=fullsend
+      - SENTRY_CLIENT=https://51e23d7263e348a7a3b90a5357c61cb2@sentry.prod.mozaws.net/168
+      - SENTRY_DSN=https://51e23d7263e348a7a3b90a5357c61cb2:65e23d7263e348a7a3b90a5357c61c44@sentry.prod.mozaws.net/168
   redis:
     image: redis:alpine
   selenium-firefox:

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sendf
+  labels:
+    app: sendf
+spec:
+  containers:
+  - name: sendf
+    image: dantuluri/fullsend:latest
+    env:
+    - name: GCS_BUCKET
+      value: "fullsend"
+    - name: REDIS_HOST
+      value: 35.230.117.94
+    - name: SENTRY_CLIENT
+      value: "https://26adfcd106f14f1ea80a6fb07be17717@sentry.io/1417129"
+    - name: SENTRY_DSN
+      value: "https://26adfcd106f14f1ea80a6fb07be17717:9094c7e5e72d484eaf110287a8f43a7b@sentry.io/1417129"
+

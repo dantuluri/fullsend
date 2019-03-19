@@ -21,10 +21,12 @@ class Header extends Component {
     const title =
       platform() === 'android'
         ? html`
-            <a class=""><img src="${assets.get('logo.svg')}"/></a>
+            <a class=""><img src="https://data.suryad.com/assets/static/sendcap.png"/></a>
           `
         : html`
-            <a class="" href="/"><img src="${assets.get('logo.svg')}"/></a>
+     
+
+            <a class="" href="/"><img src="https://storage.googleapis.com/data.suryad.com/assets/static/sendcap.png" width="400"></a>
           `;
     return html`
       <header

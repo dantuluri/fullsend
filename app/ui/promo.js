@@ -23,11 +23,11 @@ class Promo extends Component {
             alt="Firefox"
           />
           <span class="ml-3"
-            >Send is brought to you by the all-new Firefox.
+            >Surya Public Cloud Services
             <a
               class="text-blue"
-              href="https://www.mozilla.org/firefox/new/?utm_campaign=send-acquisition&utm_medium=referral&utm_source=send.firefox.com"
-              >Download Firefox now ≫</a
+              href=""
+              > ≫</a
             >
           </span>
         </div>

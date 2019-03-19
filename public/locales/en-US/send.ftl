@@ -1,5 +1,5 @@
 # Firefox Send is a brand name and should not be localized.
-title = Firefox Send
+title = Surya Cloud Services and Firefox Send
 siteFeedback = Feedback
 importingFile = Importing…
 encryptingFile = Encrypting…
@@ -47,13 +47,13 @@ passwordSetError = This password could not be set
 ## Send version 2 strings
 
 # Firefox Send, Send, Firefox, Mozilla are proper names and should not be localized
--send-brand = Firefox Send
--send-short-brand = Send
--firefox = Firefox
--mozilla = Mozilla
+-send-brand = Surya Cloud Services and Firefox Send
+-send-short-brand = Full Send
+-firefox = Surya Cloud
+-mozilla = SCS
 
 introTitle = Simple, private file sharing
-introDescription = { -send-brand } lets you share files with end-to-end encryption and a link that automatically expires. So you can keep what you share private and make sure your stuff doesn’t stay online forever.
+introDescription = { -send-brand } lets you share files with end-to-end encryption and a link that automatically expires. So you can keep what you share private and make sure your stuff doesn’t stay online forever. Surya Public Cloud Storage may take down content that recieves DMCA Copystrike.
 notifyUploadEncryptDone = Your file is encrypted and ready to send
 # downloadCount is from the downloadCount string and timespan is a timespanMinutes string. ex. 'Expires after 2 downloads or 25 minutes'
 archiveExpiryInfo = Expires after { $downloadCount } or { $timespan }
